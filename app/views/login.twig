@@ -1,0 +1,46 @@
+{% extends 'base.twig' %}
+
+{% set title = 'Sign in' %}
+
+{% block body %}
+<div class="container">
+	<div style="margin-top: 50px;" class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="panel-title">Sign In</div>
+			</div>
+			<div class="panel-body">
+				{% if error %}
+					<div class="alert alert-danger">Login failed!</div>
+				{% endif %}
+				<form role="form" method="POST">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+							<input id="username" type="text" class="form-control" name="username" placeholder="Username" autofocus>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+							<input id="password" type="password" class="form-control" name="password" placeholder="Password">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="checkbox">
+								<label><input id="login-remember" type="checkbox" name="remember" value="1"> Remember me</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group pull-right">
+						<button type="submit" class="btn btn-success">Login</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

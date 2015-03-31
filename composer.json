@@ -1,0 +1,42 @@
+{
+    "name": "indigophp/service-application",
+    "type": "project",
+    "description": "Handle service cases easily",
+    "license": "MIT",
+    "keywords": ["service", "application"],
+    "homepage": "https://indigophp.com",
+    "authors": [
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "alexbilbie/proton": "~1.4",
+        "indigophp/proton-tools": "dev-master",
+        "stack/builder": "~1.0",
+        "stack/run": "~1.0",
+        "twig/twig": "~1.0",
+        "knplabs/knp-menu": "2.0.*@dev",
+        "indigophp/knp-menu-extensions": "dev-master",
+        "indigophp/guardian": "dev-master",
+        "indigophp/stack-guardian": "dev-master",
+        "indigophp/guardian-doctrine": "dev-master",
+        "indigophp/proton-crud": "dev-cqrs",
+        "indigophp/fuelphp-fieldset-twig": "dev-master",
+        "symfony/yaml": "~2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Indigo\\Service\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}

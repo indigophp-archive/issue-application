@@ -1,0 +1,4 @@
+app/parameters.yml.dist
+build/
+vendor/
+composer.lock
