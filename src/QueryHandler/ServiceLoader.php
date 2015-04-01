@@ -26,7 +26,7 @@ class ServiceLoader extends DoctrineEntityLoader
      */
     public function handle(LoadEntity $query)
     {
-        $data = parent::handle($query);;
+        $data = parent::handle($query);
 
         $data['estimatedEnd'] = $data['estimatedEnd']->format('Y-m-d');
 

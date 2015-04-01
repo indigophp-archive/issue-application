@@ -27,6 +27,10 @@
         "indigophp/fuelphp-fieldset-twig": "dev-master",
         "symfony/yaml": "~2.6"
     },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1",
+        "henrikbjorn/phpspec-code-coverage" : "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "Indigo\\Service\\": "src/"

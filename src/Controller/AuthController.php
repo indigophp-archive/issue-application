@@ -15,7 +15,6 @@ use Indigo\Guardian\Service\Login;
 use Proton\Tools\AuthController as ParentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Login handling controller

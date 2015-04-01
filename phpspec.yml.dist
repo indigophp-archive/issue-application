@@ -1,0 +1,4 @@
+suites:
+  service_suite:
+    namespace: Indigo\Service
+    psr4_prefix: Indigo\Service

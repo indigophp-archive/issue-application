@@ -17,6 +17,11 @@ namespace Indigo\Service\Entity;
 class Service
 {
     /**
+     * @var integer
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $customerName;
@@ -32,6 +37,16 @@ class Service
     private $customerEmail;
 
     /**
+     * @var string
+     */
+    private $publicComment;
+
+    /**
+     * @var string
+     */
+    private $internalComment;
+
+    /**
      * @var \DateTime
      */
     private $estimatedEnd;
@@ -41,31 +56,23 @@ class Service
      */
     private $createdAt;
 
-    /**
-     * @var integer
-     */
-    private $id;
-
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
     }
 
     /**
-     * Set customerName
+     * Returns the id
      *
-     * @param string $customerName
-     * @return Szerviz
+     * @return integer
      */
-    public function setCustomerName($customerName)
+    public function getId()
     {
-        $this->customerName = $customerName;
-
-        return $this;
+        return $this->id;
     }
 
     /**
-     * Get customerName
+     * Returns the customer name
      *
      * @return string
      */
@@ -75,20 +82,17 @@ class Service
     }
 
     /**
-     * Set customerPhone
+     * Sets the customer name
      *
-     * @param string $customerPhone
-     * @return Szerviz
+     * @param string $customerName
      */
-    public function setCustomerPhone($customerPhone)
+    public function setCustomerName($customerName)
     {
-        $this->customerPhone = $customerPhone;
-
-        return $this;
+        $this->customerName = $customerName;
     }
 
     /**
-     * Get customerPhone
+     * Returns the customer phone
      *
      * @return string
      */
@@ -98,20 +102,17 @@ class Service
     }
 
     /**
-     * Set customerEmail
+     * Sets the customer phone
      *
-     * @param string $customerEmail
-     * @return Szerviz
+     * @param string $customerPhone
      */
-    public function setCustomerEmail($customerEmail)
+    public function setCustomerPhone($customerPhone)
     {
-        $this->customerEmail = $customerEmail;
-
-        return $this;
+        $this->customerPhone = $customerPhone;
     }
 
     /**
-     * Get customerEmail
+     * Returns the customer email
      *
      * @return string
      */
@@ -121,20 +122,57 @@ class Service
     }
 
     /**
-     * Set estimatedEnd
+     * Sets the customer email
      *
-     * @param \DateTime $estimatedEnd
-     * @return Szerviz
+     * @param string $customerEmail
      */
-    public function setEstimatedEnd($estimatedEnd)
+    public function setCustomerEmail($customerEmail)
     {
-        $this->estimatedEnd = $estimatedEnd;
-
-        return $this;
+        $this->customerEmail = $customerEmail;
     }
 
     /**
-     * Get estimatedEnd
+     * Returns the public comment
+     *
+     * @return string
+     */
+    public function getPublicComment()
+    {
+        return $this->publicComment;
+    }
+
+    /**
+     * Sets the public comment
+     *
+     * @param string $publicComment
+     */
+    public function setPublicComment($publicComment)
+    {
+        $this->publicComment = $publicComment;
+    }
+
+    /**
+     * Returns the internal comment
+     *
+     * @return string
+     */
+    public function getInternalComment()
+    {
+        return $this->internalComment;
+    }
+
+    /**
+     * Sets the internal comment
+     *
+     * @param string $internalComment
+     */
+    public function setInternalComment($internalComment)
+    {
+        $this->internalComment = $internalComment;
+    }
+
+    /**
+     * Returns the estimated end
      *
      * @return \DateTime
      */
@@ -144,35 +182,22 @@ class Service
     }
 
     /**
-     * Set createdAt
+     * Sets the estimated end
      *
-     * @param \DateTime $createdAt
-     * @return Szerviz
+     * @param \DateTime $estimatedEnd
      */
-    public function setCreatedAt($createdAt)
+    public function setEstimatedEnd(\DateTime $estimatedEnd)
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
+        $this->estimatedEnd = $estimatedEnd;
     }
 
     /**
-     * Get createdAt
+     * Returns when the service was created at
      *
      * @return \DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }

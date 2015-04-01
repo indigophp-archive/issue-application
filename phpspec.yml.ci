@@ -1,0 +1,15 @@
+suites:
+  service_suite:
+    namespace: Indigo\Service
+    psr4_prefix: Indigo\Service
+extensions:
+  - PhpSpec\Extension\CodeCoverageExtension
+formatter.name: pretty
+code_coverage:
+  format: clover
+  output: build/coverage.xml
+  blacklist_files:
+    - src/Bootstrap.php
+    - src/Form/ServiceType.php
+    - src/Listener/RootPath.php
+    - src/Provider/ServiceServiceProvider.php
