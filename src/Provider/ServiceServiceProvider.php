@@ -11,26 +11,24 @@
 
 namespace Indigo\Service\Provider;
 
-use Indigo\Service\Controller\ServiceController;
-use League\Container\ServiceProvider;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-// use Proton\Crud\CrudServiceProvider;
+use Proton\Crud\CrudServiceProvider;
 
 /**
  * Provides Service CRUD services
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ServiceServiceProvider extends ServiceProvider
+class ServiceServiceProvider extends CrudServiceProvider
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $provides = [
-        'Indigo\Service\Controller\ServiceController',
-    ];
+    protected $serviceName = 'service';
+
+    /**
+     * @var string
+     */
+    protected $controller = 'Indigo\Service\Controller\ServiceController';
 
     /**
      * Provides handler map
@@ -45,26 +43,4 @@ class ServiceServiceProvider extends ServiceProvider
         'Proton\Crud\Query\FindAllEntities' => 'Proton\Crud\QueryHandler\DoctrineAllEntityFinder',
         'Proton\Crud\Query\LoadEntity'      => 'Indigo\Service\QueryHandler\ServiceLoader',
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function register()
-    {
-        $this->getContainer()->add('Indigo\Service\Controller\ServiceController', function($twig) {
-            $locator = new ContainerLocator(
-                $this->getContainer(),
-                $this->handlerMap
-            );
-
-            $inflector = new HandleInflector;
-
-            $middleware = new CommandHandlerMiddleware($locator, $inflector);
-
-            $commandBus = $this->getContainer()->get('League\Tactician\CommandBus', [[$middleware]]);
-
-            return new ServiceController($twig, $commandBus);
-        })
-        ->withArgument('Twig_Environment');
-    }
 }

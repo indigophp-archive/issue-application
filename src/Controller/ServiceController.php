@@ -50,9 +50,7 @@ class ServiceController extends Controller
     ];
 
     /**
-     * CREATE form
-     *
-     * @return Form
+     * {@inheritdoc}
      */
     protected function createCreateForm()
     {
@@ -70,9 +68,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Creates validation
-     *
-     * @return Validator
+     * {@inheritdoc}
      */
     protected function createValidator()
     {
@@ -85,9 +81,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * UPDATE form
-     *
-     * @return Form
+     * {@inheritdoc}
      */
     protected function createUpdateForm()
     {
