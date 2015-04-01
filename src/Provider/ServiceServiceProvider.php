@@ -38,11 +38,12 @@ class ServiceServiceProvider extends ServiceProvider
      * @var array
      */
     protected $handlerMap = [
-        'Proton\Crud\Command\CreateEntity' => 'Indigo\Service\CommandHandler\ServiceCreator',
-        'Proton\Crud\Command\UpdateEntity' => 'Indigo\Service\CommandHandler\ServiceUpdater',
-        'Proton\Crud\Command\DeleteEntity' => 'Proton\Crud\CommandHandler\DoctrineEntityRemover',
-        'Proton\Crud\Query\FindEntity'     => 'Proton\Crud\QueryHandler\DoctrineEntityFinder',
-        'Proton\Crud\Query\LoadEntity'     => 'Indigo\Service\QueryHandler\ServiceLoader',
+        'Proton\Crud\Command\CreateEntity'  => 'Indigo\Service\CommandHandler\ServiceCreator',
+        'Proton\Crud\Command\UpdateEntity'  => 'Indigo\Service\CommandHandler\ServiceUpdater',
+        'Proton\Crud\Command\DeleteEntity'  => 'Proton\Crud\CommandHandler\DoctrineEntityRemover',
+        'Proton\Crud\Query\FindEntity'      => 'Proton\Crud\QueryHandler\DoctrineEntityFinder',
+        'Proton\Crud\Query\FindAllEntities' => 'Proton\Crud\QueryHandler\DoctrineAllEntityFinder',
+        'Proton\Crud\Query\LoadEntity'      => 'Indigo\Service\QueryHandler\ServiceLoader',
     ];
 
     /**
@@ -58,7 +59,7 @@ class ServiceServiceProvider extends ServiceProvider
 
             $inflector = new HandleInflector;
 
-            $middleware new CommandHandlerMiddleware($locator, $inflector);
+            $middleware = new CommandHandlerMiddleware($locator, $inflector);
 
             $commandBus = $this->getContainer()->get('League\Tactician\CommandBus', [[$middleware]]);
 

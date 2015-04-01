@@ -136,5 +136,9 @@ return [
                 'Indigo\Guardian\Service\Logout',
             ],
         ],
+        'Indigo\Hydra\Hydrator' => [
+            'class' => 'Indigo\Hydra\Hydrator\Generated'
+        ],
+        'League\Tactician\CommandBus' => 'League\Tactician\CommandBus',
     ],
 ];

@@ -13,12 +13,12 @@ $app = require __DIR__.'/app.php';
 
 $app->get('/', 'Indigo\Service\Controller\MainController::index');
 
-$app->get('/services', 'Indigo\Service\Controller\CaseController::index');
-$app->get('/services/create', 'Indigo\Service\Controller\CaseController::create');
-$app->post('/services', 'Indigo\Service\Controller\CaseController::processCreate');
-$app->get('/services/edit/{id}', 'Indigo\Service\Controller\CaseController::update');
-$app->put('/services/{id}', 'Indigo\Service\Controller\CaseController::processUpdate');
-$app->delete('/services/{id}', 'Indigo\Service\Controller\CaseController::delete');
+$app->get('/services', 'Indigo\Service\Controller\ServiceController::index');
+$app->get('/services/create', 'Indigo\Service\Controller\ServiceController::create');
+$app->post('/services/create', 'Indigo\Service\Controller\ServiceController::processCreate');
+$app->get('/services/edit/{id}', 'Indigo\Service\Controller\ServiceController::update');
+$app->post('/services/edit/{id}', 'Indigo\Service\Controller\ServiceController::processUpdate');
+$app->get('/services/delete/{id}', 'Indigo\Service\Controller\ServiceController::delete');
 
 $app->get('/login', 'Indigo\Service\Controller\AuthController::login');
 $app->post('/login', 'Indigo\Service\Controller\AuthController::processLogin');

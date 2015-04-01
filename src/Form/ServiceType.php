@@ -37,10 +37,19 @@ class ServiceType implements FormType
         $customerFieldset['customerEmail'] = (new Input\Email('customerEmail'))
             ->setLabel(gettext('Customer email'));
 
-        $form['customerDetails'] = $fieldset;
+        $form['customerDetails'] = $customerFieldset;
 
-        $form['estimatedEnd'] = (new Input\Text('estimatedEnd'))
+        $serviceFieldset = new Fieldset;
+        $serviceFieldset->setLegend(gettext('Service details'));
+
+        $serviceFieldset['estimatedEnd'] = (new Input\Text('estimatedEnd'))
             ->setLabel(gettext('Estimated end'));
+        $serviceFieldset['publicCommend'] = (new Input\Textarea('publicCommend'))
+            ->setLabel(gettext('Comment'));
+        $serviceFieldset['internalCommend'] = (new Input\Textarea('internalCommend'))
+            ->setLabel(gettext('Internal comment'));
+
+        $form['serviceDetails'] = $serviceFieldset;
     }
 
     /**

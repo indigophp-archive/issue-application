@@ -12,10 +12,12 @@
 namespace Indigo\Service\Controller;
 
 use Fuel\Fieldset\Form;
+use Fuel\Fieldset\Input;
 use Fuel\Validation\Validator;
 use Indigo\Service\Form\ServiceType;
 use League\Route\Http\Exception\NotFoundException;
 use Proton\Crud\Controller;
+use Proton\Crud\Query;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ServiceController
+class ServiceController extends Controller
 {
     /**
      * @var string
@@ -61,7 +63,7 @@ class ServiceController
         $formType->buildForm($form);
 
         $form['submit'] = (new Input\Button('submit'))
-            ->setAttributes('type', 'submit')
+            ->setAttribute('type', 'submit')
             ->setContents(gettext('Create'));
 
         return $form;
@@ -88,14 +90,15 @@ class ServiceController
      * @return Form
      */
     protected function createUpdateForm()
+    {
         $form = new Form;
-        $form->setAttribute('method', 'PUT');
+        $form->setAttribute('method', 'POST');
 
         $formType = new ServiceType;
         $formType->buildForm($form);
 
         $form['submit'] = (new Input\Button('submit'))
-            ->setAttributes('type', 'submit')
+            ->setAttribute('type', 'submit')
             ->setContents(gettext('Update'));
 
         return $form;
@@ -106,9 +109,11 @@ class ServiceController
      */
     public function index(Request $request, Response $response, array $args)
     {
-        $entities = $this->em->getRepository($this->entityClass)->findAll();
+        $query = new Query\FindAllEntities($this->entityClass);
 
-        $response->setContent($this->twig->render('services/list.twig', [
+        $entities = $this->commandBus->handle($query);
+
+        $response->setContent($this->twig->render('service/list.twig', [
             'entities' => $entities
         ]));
 
