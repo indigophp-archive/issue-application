@@ -8,8 +8,8 @@
 		<field name="customerName" type="string" />
 		<field name="customerPhone" type="string" />
 		<field name="customerEmail" type="string" />
-		<field name="publicComment" type="text" />
-		<field name="internalComment" type="text" />
+		<field name="publicComment" type="text" nullable="true" />
+		<field name="internalComment" type="text" nullable="true" />
 		<field name="estimatedEnd" type="datetime" />
 		<field name="createdAt" type="datetime" />
 	</entity>

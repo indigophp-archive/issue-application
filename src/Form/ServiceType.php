@@ -44,9 +44,9 @@ class ServiceType implements FormType
 
         $serviceFieldset['estimatedEnd'] = (new Input\Text('estimatedEnd'))
             ->setLabel(gettext('Estimated end'));
-        $serviceFieldset['publicCommend'] = (new Input\Textarea('publicCommend'))
+        $serviceFieldset['publicComment'] = (new Input\Textarea('publicComment'))
             ->setLabel(gettext('Comment'));
-        $serviceFieldset['internalCommend'] = (new Input\Textarea('internalCommend'))
+        $serviceFieldset['internalComment'] = (new Input\Textarea('internalComment'))
             ->setLabel(gettext('Internal comment'));
 
         $form['serviceDetails'] = $serviceFieldset;
@@ -70,5 +70,8 @@ class ServiceType implements FormType
         $validator->addField('estimatedEnd', gettext('Estimated end'))
             ->required()
             ->date(['format' => 'Y-m-d']);
+
+        $validator->addField('publicComment', gettext('Comment'));
+        $validator->addField('internalComment', gettext('Internal comment'));
     }
 }

@@ -5,7 +5,7 @@
 			<generator strategy="AUTO"/>
 		</id>
 
-		<field name="username" type="string" />
+		<field name="username" type="string" unique="true" />
 		<field name="password" type="string" />
 		<field name="email" type="string" />
 	</entity>
