@@ -25,7 +25,9 @@
         "indigophp/guardian-doctrine": "dev-master",
         "indigophp/proton-crud": "dev-master",
         "indigophp/fuelphp-fieldset-twig": "dev-master",
-        "symfony/yaml": "~2.6"
+        "indigophp/robo-doctrine": "0.1.*@dev",
+        "symfony/yaml": "~2.6",
+        "twbs/bootstrap": "3.3.4"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1",

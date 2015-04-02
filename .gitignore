@@ -1,5 +1,6 @@
 app/parameters.yml.dist
 build/
+public/assets/
 vendor/
 composer.lock
 phpspec.yml
