@@ -16,37 +16,33 @@ use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 return [
     'di' => [
         'Twig_Environment' => [
-            'definition' => function($app) {
+            'definition' => function($app, $paths, $extensions) {
                 $config = $app->getConfig('twig', []);
-                $paths = [];
-                $options = [];
-
-                if (isset($config['paths'])) {
-                    foreach ($config['paths'] as $path) {
-                        $paths[] = ROOTPATH.'/'.$path;
-                    }
-                }
 
                 // always add the application as a path
                 array_unshift($paths, $app->getConfig('path').'views');
 
                 $loader = new \Twig_Loader_Filesystem($paths);
 
-                if (isset($config['options'])) {
-                    $options = $config['options'];
-                }
+                $twig = new \Twig_Environment($loader, $config);
 
-                $twig = new \Twig_Environment($loader, $options);
-
-                if (isset($config['extensions'])) {
-                    foreach ($config['extensions'] as $extension) {
-                        $twig->addExtension($app->getContainer()->get($extension));
-                    }
+                foreach ($extensions as $extension) {
+                    $twig->addExtension($app->getContainer()->get($extension));
                 }
 
                 return $twig;
             },
-            'arguments' => ['app'],
+            'arguments' => [
+                'app',
+                [
+                    ROOTPATH.'/vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
+                    ROOTPATH.'/vendor/indigophp/proton-crud/views',
+                ],
+                [
+                    'Knp\Menu\Twig\MenuExtension',
+                    'Indigo\Fuel\Fieldset\Twig\FieldsetExtension',
+                ],
+            ],
             'singleton' => true,
         ],
         'Knp\Menu\Provider\MenuProviderInterface' => [
@@ -88,6 +84,33 @@ return [
             },
             'arguments'  => ['Symfony\Component\HttpFoundation\Request'],
         ],
+        'menu.main' => [
+            'definition' => function($factory) {
+                $menu = $factory->createItem('Main menu');
+
+                $menu->addChild('home', [
+                    'uri'   => '/',
+                    'label' => gettext('Home'),
+                ])
+                ->setLinkAttribute('title', gettext('Home'));
+
+                $menu->addChild('services', [
+                    'uri'   => '/services',
+                    'label' => gettext('Service'),
+                ])
+                ->setLinkAttribute('title', gettext('Service'));
+
+                $menu->addChild('logout', [
+                    'uri'   => '/logout',
+                    'label' => gettext('Logout'),
+                ])
+                ->setLinkAttribute('title', gettext('Logout'));
+
+                return $menu;
+            },
+            'singleton' => true,
+            'arguments' => ['Knp\Menu\MenuFactory'],
+        ],
         'Indigo\Fuel\Fieldset\RenderProvider' => [
             'class' => 'Indigo\Fuel\Fieldset\RenderProvider\SimpleProvider',
         ],
@@ -117,17 +140,14 @@ return [
             'arguments' => [
                 'Doctrine\ORM\EntityManagerInterface',
             ],
+            'singleton' => true,
         ],
         'Indigo\Guardian\Authenticator' => [
             'class'     => 'Indigo\Guardian\Authenticator\UserPassword',
             'arguments' => ['hasher'],
         ],
-        'hasher' => [
-            'class' => 'Indigo\Guardian\Hasher\Plaintext',
-        ],
-        'Indigo\Guardian\Session' => [
-            'class' => 'Indigo\Guardian\Session\Native'
-        ],
+        'hasher' => 'Indigo\Guardian\Hasher\Plaintext',
+        'Indigo\Guardian\Session' => 'Indigo\Guardian\Session\Native',
         'Indigo\Guardian\Stack\Authentication' => [
             'class'     => 'Indigo\Guardian\Stack\Authentication',
             'arguments' => [
@@ -136,9 +156,6 @@ return [
                 'Indigo\Guardian\Service\Logout',
             ],
         ],
-        'Indigo\Hydra\Hydrator' => [
-            'class' => 'Indigo\Hydra\Hydrator\Generated'
-        ],
-        'League\Tactician\CommandBus' => 'League\Tactician\CommandBus',
+        'Indigo\Hydra\Hydrator' => 'Indigo\Hydra\Hydrator\Generated',
     ],
 ];

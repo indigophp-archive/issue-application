@@ -4,7 +4,6 @@ defined('ROOTPATH') or define('ROOTPATH', realpath(__DIR__.'/'));
 
 require ROOTPATH.'/vendor/autoload.php';
 
-use Doctrine\ORM\Tools\Console\Command\SchemaTool;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Indigo\Service\Entity\User;
 
@@ -15,6 +14,8 @@ use Indigo\Service\Entity\User;
  */
 class RoboFile extends \Robo\Tasks
 {
+    use Indigo\Robo\Task\Doctrine\loadOrmTasks;
+
     /**
      * Runs a php server
      */
@@ -27,6 +28,10 @@ class RoboFile extends \Robo\Tasks
 
     /**
      * Creates a new user
+     *
+     * @param string $username Username
+     * @param string $email    Email
+     * @param string $password Password
      */
     public function userCreate($username, $email, $password)
     {
@@ -42,53 +47,33 @@ class RoboFile extends \Robo\Tasks
     }
 
     /**
-     * Processes the schema and either create it directly on EntityManager Storage Connection or generate the SQL output
+     * Dumps assets to the public directory
      */
-    public function schemaCreate($opt = ['dump-sql' => false])
-    {
-        $helperSet = $this->getEntityManagerHelperSet();
-        $command = new SchemaTool\CreateCommand;
-        $command->setHelperSet($helperSet);
+    public function assetsDump(
+        array $opt = [
+            'bootstrap-dir' => 'vendor/twbs/bootstrap/dist',
+            'jquery-dir'    => 'vendor/components/jquery'
+        ]
+    ) {
+        $opt['bootstrap-dir'] = realpath($opt['bootstrap-dir']);
+        $opt['jquery-dir'] = realpath($opt['jquery-dir']);
 
-        $this->taskSymfonyCommand($command)
-            ->opt('dump-sql', $opt['dump-sql'])
+        $this->taskDeleteDir('public/assets/')->run();
+
+        $this->taskFileSystemStack()
+            ->mkdir('public/assets/css')
+            ->mkdir('public/assets/js')
+            ->mkdir('public/assets/fonts')
+            ->mkdir('public/assets/img')
+            ->copy($opt['bootstrap-dir'].'/css/bootstrap.min.css', 'public/assets/css/bootstrap.min.css')
+            ->copy($opt['bootstrap-dir'].'/js/bootstrap.min.js', 'public/assets/js/bootstrap.min.js')
+            ->mirror($opt['bootstrap-dir'].'/fonts/', 'public/assets/fonts/')
+            ->copy($opt['jquery-dir'].'/jquery.min.js', 'public/assets/js/jquery.min.js')
             ->run();
     }
 
     /**
-     * Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata
-     */
-    public function schemaUpdate($opt = ['dump-sql' => false, 'force' => false, 'complete' => false])
-    {
-        $helperSet = $this->getEntityManagerHelperSet();
-        $command = new SchemaTool\UpdateCommand;
-        $command->setHelperSet($helperSet);
-
-        $this->taskSymfonyCommand($command)
-            ->opt('dump-sql', $opt['dump-sql'])
-            ->opt('force', $opt['force'])
-            ->opt('complete', $opt['complete'])
-            ->run();
-    }
-
-    /**
-     * Drop the complete database schema of EntityManager Storage Connection or generate the corresponding SQL output
-     */
-    public function schemaDrop($opt = ['dump-sql' => false, 'force' => false, 'full-database' => false])
-    {
-        $helperSet = $this->getEntityManagerHelperSet();
-        $command = new SchemaTool\DropCommand;
-        $command->setHelperSet($helperSet);
-
-        $this->taskSymfonyCommand($command)
-            ->opt('dump-sql', $opt['dump-sql'])
-            ->opt('force', $opt['force'])
-            ->opt('full-database', $opt['full-database'])
-            ->run();
-    }
-
-    /**
-     * Returns an EntityManager
+     * {@inheritdoc}
      */
     protected function getEntityManagerHelperSet()
     {
