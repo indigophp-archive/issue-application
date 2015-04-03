@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-defined('ROOTPATH') or define('ROOTPATH', realpath(__DIR__.'/../'));
+defined('APP_ROOT') or define('APP_ROOT', realpath(__DIR__.'/../'));
+putenv('APP_ROOT='.APP_ROOT);
 
-require ROOTPATH.'/vendor/autoload.php';
+require APP_ROOT.'/vendor/autoload.php';
 
-$app = require ROOTPATH.'/app/bootstrap.php';
+$app = require APP_ROOT.'/app/bootstrap.php';
 
 Stack\run($app);

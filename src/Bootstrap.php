@@ -16,6 +16,10 @@ use Proton\Application;
 /**
  * Bootstraps the application
  *
+ * Any bootstrappinh logic, that is related to the application should be here
+ *
+ * TODO: routes should be generated from config
+ *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class Bootstrap
@@ -40,6 +44,8 @@ class Bootstrap
 
         $app->get('/login', 'Indigo\Service\Controller\AuthController::login');
         $app->post('/login', 'Indigo\Service\Controller\AuthController::processLogin');
+
+        $app->getEmitter()->addListener('request.received', $app['Indigo\Service\Listener\RootPath']);
 
         return $app;
     }

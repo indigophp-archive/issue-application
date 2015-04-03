@@ -20,7 +20,7 @@ return [
                 $config = $app->getConfig('twig', []);
 
                 // always add the application as a path
-                array_unshift($paths, $app->getConfig('path').'views');
+                array_unshift($paths, $app->getConfig('path').'/views');
 
                 $loader = new \Twig_Loader_Filesystem($paths);
 
@@ -35,8 +35,8 @@ return [
             'arguments' => [
                 'app',
                 [
-                    ROOTPATH.'/vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-                    ROOTPATH.'/vendor/indigophp/proton-crud/views',
+                    APP_ROOT.'/vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
+                    APP_ROOT.'/vendor/indigophp/proton-crud/views',
                 ],
                 [
                     'Knp\Menu\Twig\MenuExtension',
@@ -111,9 +111,7 @@ return [
             'singleton' => true,
             'arguments' => ['Knp\Menu\MenuFactory'],
         ],
-        'Indigo\Fuel\Fieldset\RenderProvider' => [
-            'class' => 'Indigo\Fuel\Fieldset\RenderProvider\SimpleProvider',
-        ],
+        'Indigo\Fuel\Fieldset\RenderProvider' => 'Indigo\Fuel\Fieldset\RenderProvider\SimpleProvider',
         'Doctrine\ORM\EntityManagerInterface' => [
             'definition' => function($app) {
                 $config = Setup::createConfiguration($app->getConfig('debug'));
