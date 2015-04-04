@@ -20,14 +20,4 @@ class ServiceControllerSpec extends ObjectBehavior
     {
         $this->shouldHaveType('Indigo\Service\Controller\ServiceController');
     }
-
-    function it_shows_services(\Twig_Environment $twig, CommandBus $commandBus, Configuration $config, Request $request, Response $response)
-    {
-        $config->getViewFor('list')->willReturn('service/list.twig');
-        $commandBus->handle(Argument::type('Proton\Crud\Query\FindAllEntities'))->willReturn([]);
-        $twig->render('service/list.twig', ['entities' => []])->willReturn('template');
-        $response->setContent('template')->shouldBeCalled();
-
-        $this->index($request, $response, []);
-    }
 }
