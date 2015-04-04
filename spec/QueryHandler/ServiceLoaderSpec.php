@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Indigo\Hydra\Hydrator;
 use Indigo\Service\Entity\Service;
+use Proton\Crud\Configuration;
 use Proton\Crud\Query\LoadEntity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,11 +23,13 @@ class ServiceLoaderSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Service\QueryHandler\ServiceLoader');
     }
 
-    function it_handles_a_load_query(Service $entity, EntityRepository $repository, LoadEntity $query, EntityManagerInterface $em, Hydrator $hydra)
+    function it_handles_a_load_query(Service $entity, EntityRepository $repository, LoadEntity $query, Configuration $config, EntityManagerInterface $em, Hydrator $hydra)
     {
         $entityClass = 'Indigo\Service\Entity\Service';
 
-        $query->getEntityClass()->willReturn($entityClass);
+        $config->getEntityClass()->willReturn($entityClass);
+
+        $query->getConfig()->willReturn($config);
         $query->getId()->willReturn(1);
 
         $em->getRepository($entityClass)->willReturn($repository);
