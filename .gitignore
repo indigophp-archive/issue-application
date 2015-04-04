@@ -1,4 +1,4 @@
-app/.env
+.env
 app/parameters.yml
 build/
 public/assets/
