@@ -43,12 +43,12 @@ if (!defined('APP_ROOT')) {
 $dotenv = new Dotenv;
 
 // To avoid the overhead caused by file loading, this is optional in production
-if (getenv('APP_ENV') !== 'prodution') {
+if (getenv('APP_ENV') == 'development') {
     $dotenv->load(APP_ROOT);
 }
 
 // Check the required variables
-$dotenv->required(['APP_CONFIG']);
+$dotenv->required(['APP_ROOT', 'APP_CONFIG']);
 
 
 /**

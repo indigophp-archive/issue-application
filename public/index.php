@@ -12,6 +12,8 @@
 defined('APP_ROOT') or define('APP_ROOT', realpath(__DIR__.'/../'));
 putenv('APP_ROOT='.APP_ROOT);
 
+defined('APP_ENV') or define('APP_ENV', getenv('APP_ENV') ?: 'development');
+
 require APP_ROOT.'/vendor/autoload.php';
 
 $app = require APP_ROOT.'/app/bootstrap.php';
