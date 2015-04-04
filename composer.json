@@ -11,6 +11,12 @@
             "email": "mark.sagikazar@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/sagikazarmark/tactician-container"
+        }
+    ],
     "require": {
         "php": ">=5.5",
         "alexbilbie/proton": "~1.4",
@@ -24,6 +30,8 @@
         "indigophp/robo-doctrine": "^0.1",
         "indigophp/stack-guardian": "dev-master",
         "knplabs/knp-menu": "2.0.*@dev",
+        "league/container": "1.x-dev as 1.3",
+        "league/tactician-container": "dev-cleanup as 0.1",
         "stack/builder": "~1.0",
         "stack/run": "~1.0",
         "symfony/yaml": "~2.6",

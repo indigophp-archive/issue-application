@@ -1,0 +1,9 @@
+name: Service Application
+db:
+  dbname:
+  user:
+  password:
+  host:
+  driver: pdo_mysql
+  charset: utf8
+twig:

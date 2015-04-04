@@ -15,7 +15,6 @@ use Fuel\Fieldset\Form;
 use Fuel\Fieldset\Input;
 use Fuel\Validation\Validator;
 use Indigo\Service\Form\ServiceType;
-use League\Route\Http\Exception\NotFoundException;
 use Proton\Crud\Controller;
 use Proton\Crud\Query;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,26 +28,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ServiceController extends Controller
 {
-    /**
-     * @var string
-     */
-    protected $entityClass = 'Indigo\Service\Entity\Service';
-
-    /**
-     * @var string
-     */
-    protected $route = '/services';
-
-    /**
-     * @var array
-     */
-    protected $views = [
-        'create' => 'service/create.twig',
-        'read'   => 'service/read.twig',
-        'update' => 'service/update.twig',
-        'list'   => 'service/list.twig',
-    ];
-
     /**
      * {@inheritdoc}
      */
@@ -96,21 +75,5 @@ class ServiceController extends Controller
             ->setContents(gettext('Update'));
 
         return $form;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function index(Request $request, Response $response, array $args)
-    {
-        $query = new Query\FindAllEntities($this->entityClass);
-
-        $entities = $this->commandBus->handle($query);
-
-        $response->setContent($this->twig->render('service/list.twig', [
-            'entities' => $entities
-        ]));
-
-        return $response;
     }
 }

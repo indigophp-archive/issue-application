@@ -1,0 +1,45 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'Services' %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Services <small><a href="services/create">New service</a></small></h1>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Customer name</th>
+						<th>Estimated end</th>
+						<th>Customer phone</th>
+						<th>Customer email</th>
+						<th>Created At</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for entity in entities %}
+						<tr>
+							<td>{{ entity.getId() }}</td>
+							<td>{{ entity.getCustomerName() }}</td>
+							<td>{{ entity.getEstimatedEnd()|date('Y-m-d') }}</td>
+							<td>{{ entity.getCustomerPhone() }}</td>
+							<td>{{ entity.getCustomerEmail() }}</td>
+							<td>{{ entity.getCreatedAt()|date('Y-m-d') }}</td>
+							<td>
+								<div class="btn-group">
+									<a href="services/edit/{{ entity.getId() }}" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
+									<a href="services/delete/{{ entity.getId() }}" class="btn btn-default"><i class="glyphicon glyphicon-remove text-danger"></i></a>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

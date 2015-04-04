@@ -1,5 +1,5 @@
 app/.env
-app/parameters.yml.dist
+app/parameters.yml
 build/
 public/assets/
 vendor/

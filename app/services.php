@@ -12,9 +12,13 @@
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
+use Indigo\Service\Provider\ServiceCrudProvider;
+use Proton\Crud\CrudServiceProvider;
 
 return [
     'di' => [
+        new CrudServiceProvider,
+        'service.crud_provider' => new ServiceCrudProvider,
         'Twig_Environment' => [
             'definition' => function($app, $paths, $extensions) {
                 $config = $app->getConfig('twig', []);
@@ -25,6 +29,8 @@ return [
                 $loader = new \Twig_Loader_Filesystem($paths);
 
                 $twig = new \Twig_Environment($loader, $config);
+
+                $twig->addGlobal('siteTitle', $app->getConfig('name', 'Application'));
 
                 foreach ($extensions as $extension) {
                     $twig->addExtension($app->getContainer()->get($extension));
