@@ -1,0 +1,39 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'View service' %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>View service <small>#{{ entity.getId() }}</small></h1>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th>#</th>
+					<td>{{ entity.getId() }}</td>
+				</tr>
+				<tr>
+					<th>Customer name</th>
+					<td>{{ entity.getCustomerName() }}</td>
+				</tr>
+				<tr>
+					<th>Estimated end</th>
+					<td>{{ entity.getEstimatedEnd()|date('Y-m-d') }}</td>
+				</tr>
+				<tr>
+					<th>Customer phone</th>
+					<td>{{ entity.getCustomerPhone() }}</td>
+				</tr>
+				<tr>
+					<th>Customer email</th>
+					<td>{{ entity.getCustomerEmail() }}</td>
+				</tr>
+				<tr>
+					<th>Created At</th>
+					<td>{{ entity.getCreatedAt()|date('Y-m-d') }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

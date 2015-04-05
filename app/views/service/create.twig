@@ -1,11 +1,12 @@
 {% extends 'layout.twig' %}
 
+{% set title = 'Create service' %}
 {% block content %}
 <div class="container">
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
 			<div class="panel panel-primary">
-				<div class="panel-heading">New service</div>
+				<div class="panel-heading">Create service</div>
 				<div class="panel-body">
 					{{ render_form(form, 'bootstrap3') }}
 				</div>
