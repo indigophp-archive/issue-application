@@ -41,7 +41,7 @@ if (!defined('APP_ROOT')) {
 $app['dotenv'] = dotenv();
 
 // Check the required variables
-$app['dotenv']->required(['APP_ROOT', 'APP_CONFIG']);
+$app['dotenv']->required(['APP_ROOT', 'APP_CONFIG', 'WKHTMLTOPDF']);
 
 
 /**

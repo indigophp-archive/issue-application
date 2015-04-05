@@ -57,6 +57,7 @@ class Service extends Configuration
         'read'   => 'service/read.twig',
         'update' => 'service/update.twig',
         'list'   => 'service/list.twig',
+        'print'  => 'service/print.twig',
     ];
 
     /**

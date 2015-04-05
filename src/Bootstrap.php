@@ -42,11 +42,12 @@ class Bootstrap
         $app->get('/services/edit/{id}', 'service.controller::update');
         $app->post('/services/edit/{id}', 'service.controller::processUpdate');
         $app->get('/services/delete/{id}', 'service.controller::delete');
+        $app->get('/services/print/{id}', 'service.controller::pdf');
 
         $app->get('/login', 'Indigo\Service\Controller\AuthController::login');
         $app->post('/login', 'Indigo\Service\Controller\AuthController::processLogin');
 
-        $app->getEmitter()->addListener('request.received', $app['Indigo\Service\Listener\RootPath']);
+        $app->getEmitter()->addListener('request.received', $app['Indigo\Service\Listener\BaseUrl']);
 
         return $app;
     }

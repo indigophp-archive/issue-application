@@ -16,11 +16,11 @@ use League\Event\AbstractListener;
 use League\Event\EventInterface;
 
 /**
- * Registers the root path with the Twig instance
+ * Registers the base URL with the Twig instance
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class RootPath extends AbstractListener
+class BaseUrl extends AbstractListener
 {
     /**
      * @var ContainerInterface
@@ -42,6 +42,7 @@ class RootPath extends AbstractListener
     {
         $twig = $this->container->get('Twig_Environment');
 
-        $twig->addGlobal('rootPath', $request->attributes->get('stack.url_map.prefix', ''));
+        $twig->addGlobal('baseUrl', $request->getScheme().'://'.$request->getHttpHost().$request->getBaseUrl());
+        // $twig->addGlobal('baseUrl', $request->getBaseUrl());
     }
 }
