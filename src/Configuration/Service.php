@@ -23,7 +23,7 @@ class Service extends Configuration
     /**
      * @var string
      */
-    protected $serviceName = 'service';
+    protected $name = 'service';
 
     /**
      * @var string

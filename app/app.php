@@ -19,7 +19,6 @@ use Symfony\Component\Yaml\Yaml;
  * loading all resources which are necessary for the application to run.
  *
  * These include:
- *  - Loading environment
  *  - Setting up dependency container
  *  - Loading configuration
  */
@@ -35,20 +34,14 @@ if (!defined('APP_ROOT')) {
 
 
 /**
- * Loading environment
+ * Checking environment
  *
- * This is the applications responsibility as it can't work without it
- * The environment file should be in the APP_ROOT in development
+ * The environment is already loaded, now it should be checked
  */
-$dotenv = new Dotenv;
-
-// To avoid the overhead caused by file loading, this is optional in production
-if (APP_ENV == 'development') {
-    $dotenv->load(APP_ROOT);
-}
+$app['dotenv'] = dotenv();
 
 // Check the required variables
-$dotenv->required(['APP_ROOT', 'APP_CONFIG']);
+$app['dotenv']->required(['APP_ROOT', 'APP_CONFIG']);
 
 
 /**

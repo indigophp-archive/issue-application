@@ -2,9 +2,7 @@
 
 namespace spec\Indigo\Service\QueryHandler;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Indigo\Hydra\Hydrator;
+use Proton\Crud\QueryHandler\DoctrineEntityLoader;
 use Indigo\Service\Entity\Service;
 use Proton\Crud\Configuration;
 use Proton\Crud\Query\LoadEntity;
@@ -13,9 +11,9 @@ use Prophecy\Argument;
 
 class ServiceLoaderSpec extends ObjectBehavior
 {
-    function let(EntityManagerInterface $em, Hydrator $hydra)
+    function let(DoctrineEntityLoader $delegatedHandler)
     {
-        $this->beConstructedWith($em, $hydra);
+        $this->beConstructedWith($delegatedHandler);
     }
 
     function it_is_initializable()
@@ -23,18 +21,14 @@ class ServiceLoaderSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Service\QueryHandler\ServiceLoader');
     }
 
-    function it_handles_a_load_query(Service $entity, EntityRepository $repository, LoadEntity $query, Configuration $config, EntityManagerInterface $em, Hydrator $hydra)
+    function it_handles_a_load_query(Service $entity, LoadEntity $query, DoctrineEntityLoader $delegatedHandler)
     {
         $entityClass = 'Indigo\Service\Entity\Service';
 
-        $config->getEntityClass()->willReturn($entityClass);
-
-        $query->getConfig()->willReturn($config);
+        $query->getEntityClass()->willReturn($entityClass);
         $query->getId()->willReturn(1);
 
-        $em->getRepository($entityClass)->willReturn($repository);
-        $repository->find(1)->willReturn($entity);
-        $hydra->extract(Argument::type($entityClass))->willReturn([
+        $delegatedHandler->handle($query)->willReturn([
             'estimatedEnd' => new \DateTime('now'),
         ]);
 

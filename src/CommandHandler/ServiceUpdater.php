@@ -19,8 +19,21 @@ use Proton\Crud\CommandHandler\DoctrineEntityUpdater;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ServiceUpdater extends DoctrineEntityUpdater
+class ServiceUpdater
 {
+    /**
+     * @var DoctrineEntityUpdater
+     */
+    protected $delegatedHandler;
+
+    /**
+     * @param DoctrineEntityUpdater $delegatedHandler
+     */
+    public function __construct(DoctrineEntityUpdater $delegatedHandler)
+    {
+        $this->delegatedHandler = $delegatedHandler;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +45,6 @@ class ServiceUpdater extends DoctrineEntityUpdater
 
         $command->setData($data);
 
-        parent::handle($command);
+        $this->delegatedHandler->handle($command);
     }
 }

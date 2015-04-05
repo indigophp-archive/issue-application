@@ -12,10 +12,22 @@
 use Indigo\Service\Bootstrap;
 
 /**
- * This file is responsible for any further application initialization before running it
+ * This file is responsible for any application initialization before running it
  *
- * Language, routes, wrappers, event listeners should all be set here
+ * Environment, language, routes, wrappers, event listeners should all be set here
  */
+
+/**
+ * Loading environment
+ *
+ * This should be done right before the application is loaded, since the application relies on the environment
+ */
+$dotenv = dotenv();
+
+// To avoid the overhead caused by file loading, this is optional in production
+if (APP_ENV == 'development') {
+    $dotenv->load(APP_ROOT);
+}
 
 // Get the application
 $app = require __DIR__.'/app.php';

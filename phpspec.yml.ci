@@ -10,6 +10,7 @@ code_coverage:
   output: build/coverage.xml
   blacklist_files:
     - src/Bootstrap.php
+    - src/Configuration/Service.php
     - src/Form/ServiceType.php
     - src/Listener/RootPath.php
-    - src/Provider/ServiceServiceProvider.php
+    - src/Provider/ServiceCrudProvider.php

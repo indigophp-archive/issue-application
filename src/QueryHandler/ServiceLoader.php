@@ -22,11 +22,24 @@ use Proton\Crud\QueryHandler\DoctrineEntityLoader;
 class ServiceLoader extends DoctrineEntityLoader
 {
     /**
+     * @var DoctrineEntityLoader
+     */
+    protected $delegatedHandler;
+
+    /**
+     * @param DoctrineEntityLoader $delegatedHandler
+     */
+    public function __construct(DoctrineEntityLoader $delegatedHandler)
+    {
+        $this->delegatedHandler = $delegatedHandler;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function handle(LoadEntity $query)
     {
-        $data = parent::handle($query);
+        $data = $this->delegatedHandler->handle($query);
 
         $data['estimatedEnd'] = $data['estimatedEnd']->format('Y-m-d');
 

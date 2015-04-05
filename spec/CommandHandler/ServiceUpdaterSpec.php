@@ -2,8 +2,7 @@
 
 namespace spec\Indigo\Service\CommandHandler;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Indigo\Hydra\Hydrator;
+use Proton\Crud\CommandHandler\DoctrineEntityUpdater;
 use Indigo\Service\Entity\Service;
 use Proton\Crud\Command\UpdateEntity;
 use PhpSpec\ObjectBehavior;
@@ -11,9 +10,9 @@ use Prophecy\Argument;
 
 class ServiceUpdaterSpec extends ObjectBehavior
 {
-    function let(EntityManagerInterface $em, Hydrator $hydra)
+    function let(DoctrineEntityUpdater $delegatedHandler)
     {
-        $this->beConstructedWith($em, $hydra);
+        $this->beConstructedWith($delegatedHandler);
     }
 
     function it_is_initializable()
@@ -21,7 +20,7 @@ class ServiceUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Service\CommandHandler\ServiceUpdater');
     }
 
-    function it_handles_an_update_command(Service $entity, UpdateEntity $command, EntityManagerInterface $em, Hydrator $hydra)
+    function it_handles_an_update_command(Service $entity, UpdateEntity $command, DoctrineEntityUpdater $delegatedHandler)
     {
         $command->getEntity()->willReturn($entity);
 
@@ -31,9 +30,7 @@ class ServiceUpdaterSpec extends ObjectBehavior
 
         $command->setData(Argument::type('array'))->shouldBeCalled();
 
-        $hydra->hydrate($entity, Argument::type('array'))->shouldBeCalled();
-        $hydra->extract($entity)->willReturn([]);
-        $em->flush()->shouldBeCalled();
+        $delegatedHandler->handle($command)->shouldBeCalled();
 
         $this->handle($command);
     }

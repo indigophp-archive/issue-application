@@ -2,18 +2,16 @@
 
 namespace spec\Indigo\Service\CommandHandler;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Indigo\Hydra\Hydrator;
+use Proton\Crud\CommandHandler\DoctrineEntityCreator;
 use Proton\Crud\Command\CreateEntity;
-use Proton\Crud\Configuration;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ServiceCreatorSpec extends ObjectBehavior
 {
-    function let(EntityManagerInterface $em, Hydrator $hydra)
+    function let(DoctrineEntityCreator $delegatedHandler)
     {
-        $this->beConstructedWith($em, $hydra);
+        $this->beConstructedWith($delegatedHandler);
     }
 
     function it_is_initializable()
@@ -21,23 +19,18 @@ class ServiceCreatorSpec extends ObjectBehavior
         $this->shouldHaveType('Indigo\Service\CommandHandler\ServiceCreator');
     }
 
-    function it_handles_a_create_command(CreateEntity $command, Configuration $config, EntityManagerInterface $em, Hydrator $hydra)
+    function it_handles_a_create_command(CreateEntity $command, DoctrineEntityCreator $delegatedHandler)
     {
         $entityClass = 'Indigo\Service\Entity\Service';
-
-        $config->getEntityClass()->willReturn($entityClass);
 
         $command->getData()->willReturn([
             'estimatedEnd' => 'now',
         ]);
-        $command->getConfig()->willReturn($config);
+        $command->getEntityClass()->willReturn($entityClass);
 
         $command->setData(Argument::type('array'))->shouldBeCalled();
 
-        $hydra->hydrate(Argument::type($entityClass), Argument::type('array'))->shouldBeCalled();
-        $hydra->extract(Argument::type($entityClass))->willReturn([]);
-        $em->persist(Argument::type($entityClass))->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $delegatedHandler->handle($command)->shouldBeCalled();
 
         $this->handle($command);
     }

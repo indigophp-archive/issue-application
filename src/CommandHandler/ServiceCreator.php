@@ -19,8 +19,21 @@ use Proton\Crud\CommandHandler\DoctrineEntityCreator;
  *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class ServiceCreator extends DoctrineEntityCreator
+class ServiceCreator
 {
+    /**
+     * @var DoctrineEntityCreator
+     */
+    protected $delegatedHandler;
+
+    /**
+     * @param DoctrineEntityCreator $delegatedHandler
+     */
+    public function __construct(DoctrineEntityCreator $delegatedHandler)
+    {
+        $this->delegatedHandler = $delegatedHandler;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +45,6 @@ class ServiceCreator extends DoctrineEntityCreator
 
         $command->setData($data);
 
-        parent::handle($command);
+        $this->delegatedHandler->handle($command);
     }
 }
