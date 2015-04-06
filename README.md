@@ -22,6 +22,12 @@ $ composer create-project indigophp/service-application
 
 ## Usage
 
+1. Create a `.env` file based on the example
+2. Create an `app/parameters.yml` file based on the example
+3. Create a database
+4. Run `robo orm:schema-create --force`
+5. Run `robo server`
+6. Enjoy!
 
 ## Testing
 
