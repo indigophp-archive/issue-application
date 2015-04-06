@@ -39,6 +39,7 @@ class Bootstrap
         $app->get('/services/create', 'service.controller::create');
         $app->post('/services/create', 'service.controller::processCreate');
         $app->get('/services/view/{id}', 'service.controller::read');
+        $app->post('/services/view/{id}/comment/create', 'service.controller::processCreateComment');
         $app->get('/services/edit/{id}', 'service.controller::update');
         $app->post('/services/edit/{id}', 'service.controller::processUpdate');
         $app->get('/services/delete/{id}', 'service.controller::delete');

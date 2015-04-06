@@ -11,15 +11,25 @@
 
 namespace Indigo\Service\Entity;
 
+use Assert;
+use Assert\Assertion;
+use Doctrine\Common\Collections\ArrayCollection;
+use Indigo\Doctrine\Entity\HasAuthor;
+use Indigo\Doctrine\Field;
+
 /**
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class Service
+class Service implements HasAuthor
 {
+    use Field\Id;
+    use Field\Author;
+    use Field\Description;
+
     /**
-     * @var integer
+     * @var ArrayCollection
      */
-    private $id;
+    private $comments;
 
     /**
      * @var string
@@ -37,16 +47,6 @@ class Service
     private $customerEmail;
 
     /**
-     * @var string
-     */
-    private $publicComment;
-
-    /**
-     * @var string
-     */
-    private $internalComment;
-
-    /**
      * @var \DateTime
      */
     private $estimatedEnd;
@@ -56,19 +56,79 @@ class Service
      */
     private $createdAt;
 
-    public function __construct()
-    {
+    /**
+     * @param string    $customerName
+     * @param string    $customerPhone
+     * @param string    $customerEmail
+     * @param \DateTime $estimatedEnd
+     * @param string    $description
+     */
+    public function __construct(
+        $customerName,
+        $customerPhone,
+        $customerEmail,
+        \DateTime $estimatedEnd,
+        $description = null
+    ) {
+        \Assert\lazy()
+            ->that($customerName, 'customerName')->notEmpty()->string()
+            ->that($customerPhone, 'customerPhone')->notEmpty()->string()
+            ->that($customerEmail, 'customerEmail')->email()
+            ->that($description, 'description')->nullOr()->string()
+            ->verifyNow();
+
+        $this->customerName = $customerName;
+        $this->customerPhone = $customerPhone;
+        $this->customerEmail = $customerEmail;
+        $this->estimatedEnd = $estimatedEnd;
+        $this->description = $description;
+
         $this->createdAt = new \DateTime('now');
+        $this->comments = new ArrayCollection;
     }
 
     /**
-     * Returns the id
-     *
-     * @return integer
+     * @return ArrayCollection
      */
-    public function getId()
+    public function getComments()
     {
-        return $this->id;
+        return $this->comments;
+    }
+
+    /**
+     * Returns the public comments
+     *
+     * @return ArrayCollection
+     */
+    public function getPublicComments()
+    {
+        return $this->comments->filter(function($comment) {
+            return $comment->isInternal() === false;
+        });
+    }
+
+    /**
+     * Returns the internal comments
+     *
+     * @return ArrayCollection
+     */
+    public function getInternalComments()
+    {
+        return $this->comments->filter(function($comment) {
+            return $comment->isInternal() === true;
+        });
+    }
+
+    /**
+     * Adds a comment
+     *
+     * @param Comment $comment
+     */
+    public function addComment(Comment $comment)
+    {
+        $comment->setService($this);
+
+        $this->comments->add($comment);
     }
 
     /**
@@ -88,6 +148,10 @@ class Service
      */
     public function setCustomerName($customerName)
     {
+        Assert\that($customerName)
+            ->notEmpty()
+            ->string();
+
         $this->customerName = $customerName;
     }
 
@@ -108,6 +172,10 @@ class Service
      */
     public function setCustomerPhone($customerPhone)
     {
+        Assert\that($customerPhone)
+            ->notEmpty()
+            ->string();
+
         $this->customerPhone = $customerPhone;
     }
 
@@ -128,47 +196,9 @@ class Service
      */
     public function setCustomerEmail($customerEmail)
     {
+        Assertion::email($customerEmail);
+
         $this->customerEmail = $customerEmail;
-    }
-
-    /**
-     * Returns the public comment
-     *
-     * @return string
-     */
-    public function getPublicComment()
-    {
-        return $this->publicComment;
-    }
-
-    /**
-     * Sets the public comment
-     *
-     * @param string $publicComment
-     */
-    public function setPublicComment($publicComment)
-    {
-        $this->publicComment = $publicComment;
-    }
-
-    /**
-     * Returns the internal comment
-     *
-     * @return string
-     */
-    public function getInternalComment()
-    {
-        return $this->internalComment;
-    }
-
-    /**
-     * Sets the internal comment
-     *
-     * @param string $internalComment
-     */
-    public function setInternalComment($internalComment)
-    {
-        $this->internalComment = $internalComment;
     }
 
     /**

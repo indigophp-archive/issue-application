@@ -12,7 +12,9 @@
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
+use Indigo\Guardian\Service\Resume;
 use Indigo\Service\Provider\ServiceCrudProvider;
+use Indigo\Service\Subscriber\AuthorProvider;
 use Proton\Crud\CrudServiceProvider;
 
 return [
@@ -152,6 +154,21 @@ return [
         ],
         'hasher' => 'Indigo\Guardian\Hasher\Plaintext',
         'Indigo\Guardian\Session' => 'Indigo\Guardian\Session\Native',
+        'Indigo\Guardian\Service\Resume' => [
+            'definition' => function($identifier, $session, $em) {
+                $service = new Resume($identifier, $session);
+
+                $authorProvider = new AuthorProvider($service);
+                $em->getEventManager()->addEventSubscriber($authorProvider);
+
+                return $service;
+            },
+            'arguments' => [
+                'Indigo\Guardian\Identifier\LoginTokenIdentifier',
+                'Indigo\Guardian\Session',
+                'Doctrine\ORM\EntityManagerInterface',
+            ],
+        ],
         'Indigo\Guardian\Stack\Authentication' => [
             'class'     => 'Indigo\Guardian\Stack\Authentication',
             'arguments' => [

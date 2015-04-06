@@ -36,4 +36,38 @@
 		</div>
 	</div>
 </div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Comments</h1>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<th>#</th>
+					<th>Comment</th>
+					<th>Author</th>
+					<th>Public</th>
+					<th>Commented at</th>
+				</thead>
+				<tbody>
+					{% for comment in entity.getComments() %}
+						<tr>
+							<td>{{ comment.getId() }}</td>
+							<td>{{ comment.getComment() }}</td>
+							<td>{{ comment.getAuthor().getUsername() }}</td>
+							<td>{% if comment.isInternal() %}No{% else %}Yes{% endif %}</td>
+							<td>{{ comment.getCreatedAt()|date('Y-m-d') }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Add comment</h2>
+			{{ render_form(commentForm, 'bootstrap3') }}
+		</div>
+	</div>
+</div>
 {% endblock %}

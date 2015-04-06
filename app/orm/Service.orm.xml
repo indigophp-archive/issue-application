@@ -8,9 +8,14 @@
 		<field name="customerName" type="string" />
 		<field name="customerPhone" type="string" />
 		<field name="customerEmail" type="string" />
-		<field name="publicComment" type="text" nullable="true" />
-		<field name="internalComment" type="text" nullable="true" />
+		<field name="description" type="text" nullable="true" />
 		<field name="estimatedEnd" type="datetime" />
 		<field name="createdAt" type="datetime" />
+
+		<one-to-many field="comments" target-entity="Indigo\Service\Entity\Comment" mapped-by="service">
+			<cascade><cascade-all /></cascade>
+			<join-column name="service_id" referenced-column-name="id" on-delete="CASCADE" on-update="CASCADE" />
+		</one-to-many>
+		<many-to-one field="author" target-entity="Indigo\Service\Entity\User"></many-to-one>
 	</entity>
 </doctrine-mapping>

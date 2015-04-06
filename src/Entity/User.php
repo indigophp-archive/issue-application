@@ -11,18 +11,17 @@
 
 namespace Indigo\Service\Entity;
 
+use Indigo\Doctrine\Entity\Author;
+use Indigo\Doctrine\Field;
 use Indigo\Guardian\Caller\User as UserInterface;
 use Indigo\Guardian\Caller\HasLoginToken;
 
 /**
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
-class User implements UserInterface, HasLoginToken
+class User implements Author, UserInterface, HasLoginToken
 {
-    /**
-     * @var integer
-     */
-    private $id;
+    use Field\Id;
 
     /**
      * @var string
@@ -49,14 +48,6 @@ class User implements UserInterface, HasLoginToken
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
