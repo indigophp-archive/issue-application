@@ -42,6 +42,7 @@ class ServiceCreator
         $data = $command->getData();
 
         $data['estimatedEnd'] = new \DateTime($data['estimatedEnd']);
+        $data['createdAt'] = new \DateTime('now');
 
         $command->setData($data);
 

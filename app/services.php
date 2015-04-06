@@ -178,5 +178,6 @@ return [
             ],
         ],
         'Indigo\Hydra\Hydrator' => 'Indigo\Hydra\Hydrator\Generated',
+        'Doctrine\Instantiator\InstantiatorInterface' => 'Doctrine\Instantiator\Instantiator',
     ],
 ];
