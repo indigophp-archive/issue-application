@@ -19,8 +19,6 @@ use Proton\Crud\CrudServiceProvider;
 
 return [
     'di' => [
-        new CrudServiceProvider,
-        'service.crud_provider' => new ServiceCrudProvider,
         'Twig_Environment' => [
             'definition' => function($app, $paths, $extensions) {
                 $config = $app->getConfig('twig', []);
@@ -33,6 +31,8 @@ return [
                 $twig = new \Twig_Environment($loader, $config);
 
                 $twig->addGlobal('siteTitle', $app->getConfig('name', 'Application'));
+                $twig->addGlobal('baseUri', $app->getConfig('baseUri', '/'));
+                $twig->addGlobal('baseUrl', $app->getConfig('baseUrl', ''));
 
                 foreach ($extensions as $extension) {
                     $twig->addExtension($app->getContainer()->get($extension));

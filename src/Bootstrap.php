@@ -12,11 +12,12 @@
 namespace Indigo\Service;
 
 use Proton\Application;
+use Proton\Tools\Listener\BaseUri;
 
 /**
  * Bootstraps the application
  *
- * Any bootstrappinh logic, that is related to the application should be here
+ * Any bootstrapping logic, that is related to the application should be here
  *
  * TODO: routes should be generated from config
  *
@@ -35,20 +36,23 @@ class Bootstrap
     {
         $app->get('/', 'Indigo\Service\Controller\MainController::index');
 
-        $app->get('/services', 'service.controller::index');
-        $app->get('/services/create', 'service.controller::create');
-        $app->post('/services/create', 'service.controller::processCreate');
-        $app->get('/services/view/{id}', 'service.controller::read');
-        $app->post('/services/view/{id}/comment/create', 'service.controller::processCreateComment');
-        $app->get('/services/edit/{id}', 'service.controller::update');
-        $app->post('/services/edit/{id}', 'service.controller::processUpdate');
-        $app->get('/services/delete/{id}', 'service.controller::delete');
-        $app->get('/services/print/{id}', 'service.controller::pdf');
+        $app->get('/services', 'Indigo\Service\Controller\ServiceController::listAction');
+        $app->get('/services/create', 'Indigo\Service\Controller\ServiceController::createAction');
+        $app->post('/services', 'Indigo\Service\Controller\ServiceController::create');
+        $app->get('/services/{id}', 'Indigo\Service\Controller\ServiceController::read');
+        $app->post('/services/{id}/comment', 'Indigo\Service\Controller\ServiceController::createComment');
+        $app->get('/services/{id}/edit', 'Indigo\Service\Controller\ServiceController::updateAction');
+        $app->post('/services/{id}', 'Indigo\Service\Controller\ServiceController::update');
+        $app->delete('/services/{id}', 'Indigo\Service\Controller\ServiceController::delete');
+        $app->get('/services/{id}/print', 'Indigo\Service\Controller\ServiceController::pdf');
 
         $app->get('/login', 'Indigo\Service\Controller\AuthController::login');
         $app->post('/login', 'Indigo\Service\Controller\AuthController::processLogin');
 
-        $app->getEmitter()->addListener('request.received', $app['Indigo\Service\Listener\BaseUrl']);
+        $baseUriListener = new BaseUri;
+        $baseUriListener->setApplication($app);
+
+        $app->subscribe('request.received', $baseUriListener);
 
         return $app;
     }
