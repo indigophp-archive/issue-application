@@ -18,4 +18,6 @@ require APP_ROOT.'/vendor/autoload.php';
 
 $app = require APP_ROOT.'/app/bootstrap.php';
 
+$app = $app['stack']->resolve($app);
+
 Stack\run($app);

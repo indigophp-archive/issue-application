@@ -92,7 +92,7 @@ class RoboFile extends \Robo\Tasks
      */
     protected function getEntityManagerHelperSet()
     {
-        $app = require __DIR__.'/app/app.php';
+        $app = require __DIR__.'/app/bootstrap.php';
 
         $em = $app['Doctrine\ORM\EntityManagerInterface'];
 

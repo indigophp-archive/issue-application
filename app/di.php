@@ -30,7 +30,7 @@ return [
 
                 $twig = new \Twig_Environment($loader, $config);
 
-                $twig->addGlobal('siteTitle', $app->getConfig('name', 'Application'));
+                $twig->addGlobal('siteTitle', $app->getConfig('name'));
                 $twig->addGlobal('baseUri', $app->getConfig('baseUri', '/'));
                 $twig->addGlobal('baseUrl', $app->getConfig('baseUrl', ''));
 
@@ -169,15 +169,5 @@ return [
                 'Doctrine\ORM\EntityManagerInterface',
             ],
         ],
-        'Indigo\Guardian\Stack\Authentication' => [
-            'class'     => 'Indigo\Guardian\Stack\Authentication',
-            'arguments' => [
-                'app',
-                'Indigo\Guardian\Service\Resume',
-                'Indigo\Guardian\Service\Logout',
-            ],
-        ],
-        'Indigo\Hydra\Hydrator' => 'Indigo\Hydra\Hydrator\Generated',
-        'Doctrine\Instantiator\InstantiatorInterface' => 'Doctrine\Instantiator\Instantiator',
     ],
 ];
