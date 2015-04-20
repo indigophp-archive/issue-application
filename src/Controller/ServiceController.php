@@ -277,16 +277,24 @@ class ServiceController extends Controller
         $entity = $this->em->getRepository($this->entityClass)->find($args['id']);
 
         if ($entity) {
-            $response->headers->set('Content-Type', 'application/pdf');
-            // $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s.pdf"', $entity->getId()));
+            $ext = pathinfo($request->getRequestUri(), PATHINFO_EXTENSION);
+            $isPdf = ($ext === 'pdf');
 
-            $template = $this->twig->render($this->views['print'], [
+            $content = $this->twig->render($this->views['print'], [
                 'entity' => $entity,
+                'isPdf'  => $isPdf,
             ]);
 
-            $pdf = new Pdf(getenv('WKHTMLTOPDF'));
+            if ($isPdf) {
+                $pdf = new Pdf(getenv('WKHTMLTOPDF'));
+                $response->headers->set('Content-Type', 'application/pdf');
+                // $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s.pdf"', $entity->getId()));
 
-            $response->setContent($pdf->getOutputFromHtml($template));
+                $content = $pdf->getOutputFromHtml($content);
+            }
+
+            $response->setContent($content);
+
 
             return $response;
         }

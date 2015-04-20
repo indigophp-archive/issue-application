@@ -44,7 +44,7 @@ class Bootstrap
         $app->get('/services/{id}/edit', 'Indigo\Service\Controller\ServiceController::updateAction');
         $app->post('/services/{id}', 'Indigo\Service\Controller\ServiceController::update');
         $app->delete('/services/{id}', 'Indigo\Service\Controller\ServiceController::delete');
-        $app->get('/services/print/{id}.pdf', 'Indigo\Service\Controller\ServiceController::pdf');
+        $app->get('/services/print/{id}', 'Indigo\Service\Controller\ServiceController::pdf');
 
         $app->get('/login', 'Indigo\Service\Controller\AuthController::login');
         $app->post('/login', 'Indigo\Service\Controller\AuthController::processLogin');
