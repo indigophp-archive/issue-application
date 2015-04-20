@@ -12,10 +12,6 @@
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
-use Indigo\Guardian\Service\Resume;
-use Indigo\Service\Provider\ServiceCrudProvider;
-use Indigo\Service\Subscriber\AuthorProvider;
-use Proton\Crud\CrudServiceProvider;
 
 return [
     'di' => [
@@ -35,7 +31,7 @@ return [
                 $twig->addGlobal('baseUrl', $app->getConfig('baseUrl', ''));
 
                 foreach ($extensions as $extension) {
-                    $twig->addExtension($app->getContainer()->get($extension));
+                    $twig->addExtension($app[$extension]);
                 }
 
                 return $twig;
@@ -80,18 +76,7 @@ return [
                 'Knp\Menu\Matcher\MatcherInterface',
             ],
         ],
-        'Knp\Menu\Matcher\MatcherInterface' => [
-            'class'     => 'Knp\Menu\Matcher\Matcher',
-            'methods' => [
-                'addVoter' => ['menu_uri_voter'],
-            ],
-        ],
-        'menu_uri_voter' => [
-            'definition' => function($request) {
-                return new \Knp\Menu\Matcher\Voter\UriVoter($request->getPathInfo());
-            },
-            'arguments'  => ['Symfony\Component\HttpFoundation\Request'],
-        ],
+        'Knp\Menu\Matcher\MatcherInterface' => 'Knp\Menu\Matcher\Matcher',
         'menu.main' => [
             'definition' => function($factory) {
                 $menu = $factory->createItem('Main menu');
@@ -132,34 +117,23 @@ return [
             'singleton' => true,
         ],
         'Indigo\Guardian\Identifier\LoginTokenIdentifier' => [
-            'definition' => function($em) {
-                $identifier = new \Indigo\Guardian\Identifier\Doctrine($em, 'Indigo\Service\Entity\User');
-
-                $identifier->setLoginTokenField('id');
-
-                return $identifier;
-            },
+            'class' => 'Indigo\Guardian\Identifier\Doctrine',
             'arguments' => [
                 'Doctrine\ORM\EntityManagerInterface',
+                'very_ugly_workaround_hack',
             ],
-            'singleton' => true,
+            'methods' => [
+                'setLoginTokenField' => ['id'],
+            ],
         ],
         'Indigo\Guardian\Authenticator' => [
             'class'     => 'Indigo\Guardian\Authenticator\UserPassword',
-            'arguments' => ['hasher'],
+            'arguments' => ['Indigo\Guardian\Hasher'],
         ],
-        'hasher' => 'Indigo\Guardian\Hasher\Plaintext',
+        'Indigo\Guardian\Hasher' => 'Indigo\Guardian\Hasher\Plaintext',
         'Indigo\Guardian\Session' => 'Indigo\Guardian\Session\Native',
-        'Indigo\Guardian\Service\Resume' => [
-            'definition' => function($identifier, $session) {
-                $service = new Resume($identifier, $session);
-
-                return $service;
-            },
-            'arguments' => [
-                'Indigo\Guardian\Identifier\LoginTokenIdentifier',
-                'Indigo\Guardian\Session',
-            ],
-        ],
+        'very_ugly_workaround_hack' => function() {
+            return 'Indigo\Service\Entity\User';
+        },
     ],
 ];

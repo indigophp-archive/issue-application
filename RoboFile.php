@@ -1,26 +1,14 @@
 <?php
 
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Indigo\Service\Entity\User;
+
 defined('APP_ROOT') or define('APP_ROOT', realpath(__DIR__.'/'));
 putenv('APP_ROOT='.APP_ROOT);
 
 defined('APP_ENV') or define('APP_ENV', getenv('APP_ENV') ?: 'development');
 
 require APP_ROOT.'/vendor/autoload.php';
-
-/**
- * Loading environment
- *
- * This should be done right before the application is loaded, since the application relies on the environment
- */
-$dotenv = dotenv();
-
-// To avoid the overhead caused by file loading, this is optional in production
-if (APP_ENV == 'development') {
-    $dotenv->load(APP_ROOT);
-}
-
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Indigo\Service\Entity\User;
 
 /**
  * This is project's console commands configuration for Robo task runner.
@@ -53,7 +41,7 @@ class RoboFile extends \Robo\Tasks
         $app = require __DIR__.'/app/app.php';
 
         $em = $app['Doctrine\ORM\EntityManagerInterface'];
-        $hasher = $app['hasher'];
+        $hasher = $app['Indigo\Guardian\Hasher'];
 
         $user = new User($username, $email, $hasher->hash($password));
 

@@ -25,10 +25,11 @@ $ composer create-project indigophp/service-application
 1. Create a `.env` file based on the example
 2. Create an `app/parameters.yml` file based on the example
 3. Create a database
-4. Create database schema by running `robo orm:schema-create --force`
+4. Create database schema by running `robo orm:schema-create`
 5. Add a user: `robo user:create username email@domain.com password`
 6. Start webserver by running `robo server`
 7. Enjoy!
+
 
 ## Testing
 

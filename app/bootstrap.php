@@ -92,8 +92,7 @@ $app['stack'] = new Builder;
 
 $app['stack']->push(
     'Indigo\Guardian\Stack\Authentication',
-    $app['Indigo\Guardian\Service\Resume'],
-    $app['Indigo\Guardian\Service\Logout'],
+    $app['Indigo\Guardian\SessionAuth'],
     ['delegateCaller' => true]
 );
 

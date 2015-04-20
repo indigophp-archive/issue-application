@@ -11,7 +11,7 @@
 
 namespace Indigo\Service\Controller;
 
-use Indigo\Guardian\Service\Login;
+use Indigo\Guardian\SessionAuth;
 use Proton\Tools\AuthController as ParentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,13 +30,13 @@ class AuthController extends ParentController
 
     /**
      * @param \Twig_Environment $twig
-     * @param Login             $loginService
+     * @param SessionAuth       $sessionAuth
      */
-    public function __construct(\Twig_Environment $twig, Login $loginService)
+    public function __construct(\Twig_Environment $twig, SessionAuth $sessionAuth)
     {
         $this->twig = $twig;
 
-        parent::__construct($loginService);
+        parent::__construct($sessionAuth);
     }
 
     /**
