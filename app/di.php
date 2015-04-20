@@ -122,11 +122,7 @@ return [
         'Indigo\Fuel\Fieldset\RenderProvider' => 'Indigo\Fuel\Fieldset\RenderProvider\SimpleProvider',
         'Doctrine\ORM\EntityManagerInterface' => [
             'definition' => function($app) {
-                $config = Setup::createConfiguration($app->getConfig('debug'));
-                $driver = new SimplifiedXmlDriver([
-                    __DIR__.'/orm/' => 'Indigo\Service\Entity'
-                ]);
-                $config->setMetadataDriverImpl($driver);
+                $config = Setup::createAnnotationMetadataConfiguration([APP_ROOT.'/src/Entity'], $app->getConfig('debug'));
 
                 $conn = $app->getConfig('db');
 

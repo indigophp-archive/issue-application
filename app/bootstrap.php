@@ -13,6 +13,7 @@ use Dotenv\Dotenv;
 use Indigo\Service\Bootstrap;
 use League\Container\Container;
 use Proton\Application;
+use Stack\Builder;
 use Symfony\Component\Yaml\Yaml;
 
 if (!defined('APP_ROOT')) {

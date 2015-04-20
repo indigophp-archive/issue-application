@@ -13,36 +13,53 @@ namespace Indigo\Service\Entity;
 
 use Assert;
 use Assert\Assertion;
-use Indigo\Doctrine\Entity\HasAuthor;
-use Indigo\Doctrine\Field;
 
 /**
+ * @Entity
+ * @Table(name="service_comments")
+ *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class Comment implements HasAuthor
 {
-    use Field\Id;
-    use Field\Author;
+    use AuthorField;
 
     /**
-     * @var Service
+     * @Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     *
+     * @var integer
      */
-    private $service;
+    private $id;
 
     /**
+     * @Column(type="text", nullable=true)
+     *
      * @var string
      */
     private $comment;
 
     /**
+     * @Column(type="boolean", options={"default":false})
+     *
      * @var boolean
      */
     private $internal = false;
 
     /**
+     * @Column(type="datetime")
+     *
      * @var \DateTime
      */
     private $createdAt;
+
+    /**
+     * @ManyToOne(targetEntity="Indigo\Service\Entity\Service")
+     *
+     * @var Service
+     */
+    private $service;
 
     /**
      * @param string  $comment
@@ -61,23 +78,13 @@ class Comment implements HasAuthor
     }
 
     /**
-     * Returns the service (if any, set by persisting the entity)
+     * Returns the ID
      *
-     * @return Service
+     * @return integer
      */
-    public function getService()
+    public function getId()
     {
-        return $this->service;
-    }
-
-    /**
-     * Sets the service
-     *
-     * @param Service $service
-     */
-    public function setService(Service $service)
-    {
-        $this->service = $service;
+        return $this->id;
     }
 
     /**
@@ -134,5 +141,25 @@ class Comment implements HasAuthor
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Returns the service (if any, set by persisting the entity)
+     *
+     * @return Service
+     */
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    /**
+     * Sets the service
+     *
+     * @param Service $service
+     */
+    public function setService(Service $service)
+    {
+        $this->service = $service;
     }
 }

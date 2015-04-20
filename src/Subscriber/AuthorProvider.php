@@ -14,7 +14,7 @@ namespace Indigo\Service\Subscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Indigo\Doctrine\Entity\HasAuthor;
+use Indigo\Service\Entity\HasAuthor;
 use Indigo\Guardian\Service\Resume;
 
 /**

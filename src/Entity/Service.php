@@ -14,47 +14,74 @@ namespace Indigo\Service\Entity;
 use Assert;
 use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
-use Indigo\Doctrine\Entity\HasAuthor;
-use Indigo\Doctrine\Field;
 
 /**
+ * @Entity
+ * @Table(name="services")
+ *
  * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
  */
 class Service implements HasAuthor
 {
-    use Field\Id;
-    use Field\Author;
-    use Field\Description;
+    use AuthorField;
 
     /**
-     * @var ArrayCollection
+     * @Column(type="integer")
+     * @Id
+     * @GeneratedValue
+     *
+     * @var integer
      */
-    private $comments;
+    private $id;
 
     /**
+     * @Column(type="string")
+     *
      * @var string
      */
     private $customerName;
 
     /**
+     * @Column(type="string")
+     *
      * @var string
      */
     private $customerPhone;
 
     /**
+     * @Column(type="string")
+     *
      * @var string
      */
     private $customerEmail;
 
     /**
+     * @Column(type="text", nullable=true)
+     *
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @Column(type="datetime")
+     *
      * @var \DateTime
      */
     private $estimatedEnd;
 
     /**
+     * @Column(type="datetime")
+     *
      * @var \DateTime
      */
     private $createdAt;
+
+    /**
+     * @OneToMany(targetEntity="Indigo\Service\Entity\Comment", cascade={"all"}, mappedBy="service")
+     *
+     * @var ArrayCollection
+     */
+    private $comments;
 
     /**
      * @param string    $customerName
@@ -88,47 +115,13 @@ class Service implements HasAuthor
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
-     * Returns the public comments
+     * Returns the ID
      *
-     * @return ArrayCollection
+     * @return integer
      */
-    public function getPublicComments()
+    public function getId()
     {
-        return $this->comments->filter(function($comment) {
-            return $comment->isInternal() === false;
-        });
-    }
-
-    /**
-     * Returns the internal comments
-     *
-     * @return ArrayCollection
-     */
-    public function getInternalComments()
-    {
-        return $this->comments->filter(function($comment) {
-            return $comment->isInternal() === true;
-        });
-    }
-
-    /**
-     * Adds a comment
-     *
-     * @param Comment $comment
-     */
-    public function addComment(Comment $comment)
-    {
-        $comment->setService($this);
-
-        $this->comments->add($comment);
+        return $this->id;
     }
 
     /**
@@ -202,6 +195,28 @@ class Service implements HasAuthor
     }
 
     /**
+     * Returns the description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Sets the description
+     *
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        Assertion::nullOrString($description);
+
+        $this->description = $description;
+    }
+
+    /**
      * Returns the estimated end
      *
      * @return \DateTime
@@ -229,5 +244,49 @@ class Service implements HasAuthor
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Returns the public comments
+     *
+     * @return ArrayCollection
+     */
+    public function getPublicComments()
+    {
+        return $this->comments->filter(function($comment) {
+            return $comment->isInternal() === false;
+        });
+    }
+
+    /**
+     * Returns the internal comments
+     *
+     * @return ArrayCollection
+     */
+    public function getInternalComments()
+    {
+        return $this->comments->filter(function($comment) {
+            return $comment->isInternal() === true;
+        });
+    }
+
+    /**
+     * Adds a comment
+     *
+     * @param Comment $comment
+     */
+    public function addComment(Comment $comment)
+    {
+        $comment->setService($this);
+
+        $this->comments->add($comment);
     }
 }
