@@ -55,6 +55,16 @@ class ServiceController extends Controller
     /**
      * {@inheritdoc}
      */
+    public function create(Request $request, Response $response, array $args)
+    {
+        $this->author = $request->attributes->get('stack.authn.caller');
+
+        return parent::create($request, $response, $args);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createCreateForm()
     {
         $form = new Form;
@@ -121,13 +131,17 @@ class ServiceController extends Controller
      */
     protected function createEntity(array $data)
     {
-        return new Service(
+        $service = new Service(
             $data['customerName'],
             $data['customerPhone'],
             $data['customerEmail'],
             new \DateTime($data['estimatedEnd']),
             $data['description']
         );
+
+        $service->setAuthor($this->author);
+
+        return $service;
     }
 
     /**
@@ -235,6 +249,7 @@ class ServiceController extends Controller
 
         if ($result->isValid()) {
             $comment = new Comment($rawData['comment'], isset($rawData['internal']) ? true : false);
+            $comment->setAuthor($request->attributes->get('stack.authn.caller'));
 
             $entity = $this->em->getRepository($this->entityClass)->find($args['id']);
 

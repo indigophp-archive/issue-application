@@ -151,18 +151,14 @@ return [
         'hasher' => 'Indigo\Guardian\Hasher\Plaintext',
         'Indigo\Guardian\Session' => 'Indigo\Guardian\Session\Native',
         'Indigo\Guardian\Service\Resume' => [
-            'definition' => function($identifier, $session, $em) {
+            'definition' => function($identifier, $session) {
                 $service = new Resume($identifier, $session);
-
-                $authorProvider = new AuthorProvider($service);
-                $em->getEventManager()->addEventSubscriber($authorProvider);
 
                 return $service;
             },
             'arguments' => [
                 'Indigo\Guardian\Identifier\LoginTokenIdentifier',
                 'Indigo\Guardian\Session',
-                'Doctrine\ORM\EntityManagerInterface',
             ],
         ],
     ],
