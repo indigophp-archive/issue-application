@@ -3,5 +3,4 @@ app/parameters.yml
 build/
 public/assets/
 vendor/
-composer.lock
 phpspec.yml

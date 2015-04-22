@@ -11,12 +11,6 @@
             "email": "mark.sagikazar@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/sagikazarmark/tactician-container"
-        }
-    ],
     "require": {
         "php": ">=5.5",
         "alexbilbie/proton": "~1.4",
